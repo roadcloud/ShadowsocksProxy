@@ -8,7 +8,7 @@
             android:title="@string/service_controller" >
         </CheckBoxPreference>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/proxy_cat" > 
+    <PreferenceCategory android:title="@string/proxy_cat" >
         <EditTextPreference
             android:defaultValue=""
             android:key="proxy"
@@ -16,32 +16,42 @@
             android:title="@string/proxy" >
         </EditTextPreference>
         <EditTextPreference
+            android:defaultValue="8388"
+            android:key="port"
+            android:summary="@string/server_port"
+            android:title="@string/server_port" >
+        </EditTextPreference>
+        <EditTextPreference
             android:defaultValue=""
             android:key="passwd"
+            android:password="true"
             android:summary="@string/passwd_summary"
             android:title="@string/passwd" >
-        </EditTextPreference>      
+        </EditTextPreference>
+        <EditTextPreference
+            android:defaultValue="8000"
+            android:key="remotedns"            
+            android:summary="@string/remotedns_summary"
+            android:title="@string/remotedns" >
+        </EditTextPreference>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/fearute_cat" >
         <CheckBoxPreference
             android:key="isAutoConnect"
             android:summary="@string/auto_connect_summary"
             android:title="@string/auto_connect" >
-        </CheckBoxPreference>   
- 
+        </CheckBoxPreference>
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="isGlobalProxy"
             android:summary="@string/auto_set_proxy_summary"
             android:title="@string/auto_set_proxy" >
         </CheckBoxPreference>
-
         <Preference
             android:key="proxyedApps"
             android:summary="@string/proxyed_apps_summary"
             android:title="@string/proxyed_apps" >
         </Preference>
-        
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/notif_cat" >
         <RingtonePreference

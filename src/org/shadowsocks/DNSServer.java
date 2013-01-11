@@ -75,11 +75,14 @@ public class DNSServer implements Runnable {
 	
 	private DatabaseHelper helper;
 	
+	private String port;
+	
 	private final static AsyncHttpClient client = new AsyncHttpClient();
 	
-	public DNSServer(Context ctx, String appHost) {
+	public DNSServer(Context ctx, String appHost, String port) {
 		
 		this.appHost = appHost;
+		this.port = port;
 		
 		client.setTimeout(6 * 1000);
 		
@@ -383,18 +386,18 @@ public class DNSServer implements Runnable {
 		String encode_host = URLEncoder.encode(Base64.encodeBytes(Base64.encodeBytesToBytes(domain
 		        .getBytes())));
 		
-		String url = "http://shadowsocksdnsproxy1.appspot.com:8000/?d=" + encode_host;
+		String url = "http://shadowsocksdnsproxy1.appspot.com:" + port + "/?d=" + encode_host;
 		String host = "shadowsocksdnsproxy1.appspot.com";
 		url = url.replace(host, appHost);
 		
 		Random random = new Random(System.currentTimeMillis());
 		int n = random.nextInt(2);
 		if (n == 0) {
-			url = "http://shadowsocksdnsproxy2.appspot.com:8000/?d=" + encode_host;
+			url = "http://shadowsocksdnsproxy2.appspot.com:" + port + "/?d=" + encode_host;
 			host = "shadowsocksdnsproxy2.appspot.com";
 			url = url.replace(host, appHost);
 		} else if (n == 1) {
-			url = "http://shadowsocksdnsproxy3.appspot.com:8000/?d=" + encode_host;
+			url = "http://shadowsocksdnsproxy3.appspot.com:" + port + "/?d=" + encode_host;
 			host = "shadowsocksdnsproxy3.appspot.com";
 			url = url.replace(host, appHost);
 		}

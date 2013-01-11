@@ -222,12 +222,16 @@ public class ShadowsocksProxyService extends Service {
 		}
 	};
 	
+	private String port;
+	
+	private String remoteDnsPort;
+	
 	public boolean connect() {
 		
 		try {
 			StringBuffer sb = new StringBuffer();
 			
-			sb.append(BASE + "proxy.sh start " + proxy + " " + passwd);
+			sb.append(BASE + "proxy.sh start " + proxy + " " + passwd + " " + port);
 			
 			final String cmd = sb.toString();
 			
@@ -271,12 +275,14 @@ public class ShadowsocksProxyService extends Service {
 		}
 		
 		proxy = bundle.getString("proxy");
+		port = bundle.getString("port");
+		remoteDnsPort = bundle.getString(ShadowsocksProxy.SETTING_REMOTEDNS);
 		passwd = bundle.getString("passwd");
 		
 		isGlobalProxy = bundle.getBoolean("isGlobalProxy");
 		
 		Log.e(TAG, "Proxy: " + proxy);
-		Log.e(TAG, "Local Port: " + passwd);
+		Log.e(TAG, "Local Port: " + port);
 		
 		// APNManager.setAPNProxy("127.0.0.1", Integer.toString(port), this);
 		
@@ -345,7 +351,7 @@ public class ShadowsocksProxyService extends Service {
 		
 		// DNS Proxy Setup
 		// with AsyncHttpClient
-		dnsServer = new DNSServer(this, proxy);
+		dnsServer = new DNSServer(this, proxy, remoteDnsPort);
 		dnsPort = dnsServer.getServPort();
 		
 		if (!preConnection())
@@ -576,7 +582,7 @@ public class ShadowsocksProxyService extends Service {
 		
 		Log.d(TAG, "Forward Successful");
 		
-		Utils.runRootCommand(BASE + "proxy.sh start " + proxy + " " + passwd);
+		Utils.runRootCommand(BASE + "proxy.sh start " + proxy + " " + passwd + " " + port);
 		
 		StringBuffer init_sb = new StringBuffer();
 		

@@ -83,13 +83,19 @@ import com.j256.ormlite.dao.Dao;
 public class ShadowsocksProxy extends PreferenceActivity implements
         OnSharedPreferenceChangeListener {
 	
+	public static final String SETTING_REMOTEDNS = "remotedns";
+	
 	private static final String TAG = "ShadowsocksProxy";
 	
 	public static final String PREFS_NAME = "ShadowsocksProxy";
 	
 	private String proxy;
 	
+	private String port;
+	
 	private String passwd;
+	
+	private String remoteDNS;
 	
 	private boolean isGlobalProxy = false;
 	
@@ -129,7 +135,11 @@ public class ShadowsocksProxy extends PreferenceActivity implements
 	
 	private EditTextPreference proxyText;
 	
+	private EditTextPreference portText;
+	
 	private EditTextPreference passwdText;
+	
+	private EditTextPreference remoteDNSText;
 	
 	private CheckBoxPreference isRunningCheck;
 	
@@ -190,6 +200,8 @@ public class ShadowsocksProxy extends PreferenceActivity implements
 	private void disableAll() {
 		proxyText.setEnabled(false);
 		passwdText.setEnabled(false);
+		portText.setEnabled(false);
+		remoteDNSText.setEnabled(false);
 		
 		proxyedApps.setEnabled(false);
 		
@@ -200,6 +212,8 @@ public class ShadowsocksProxy extends PreferenceActivity implements
 	private void enableAll() {
 		proxyText.setEnabled(true);
 		passwdText.setEnabled(true);
+		portText.setEnabled(true);
+		remoteDNSText.setEnabled(true);
 		
 		if (!isGlobalProxyCheck.isChecked())
 			proxyedApps.setEnabled(true);
@@ -250,6 +264,8 @@ public class ShadowsocksProxy extends PreferenceActivity implements
 		
 		proxyText = (EditTextPreference) findPreference("proxy");
 		passwdText = (EditTextPreference) findPreference("passwd");
+		portText = (EditTextPreference) findPreference("port");
+		remoteDNSText = (EditTextPreference) findPreference(SETTING_REMOTEDNS);
 		proxyedApps = findPreference("proxyedApps");
 		
 		isRunningCheck = (CheckBoxPreference) findPreference("isRunning");
@@ -445,8 +461,12 @@ public class ShadowsocksProxy extends PreferenceActivity implements
 		}
 		
 		// Setup the initial values
-		if (!settings.getString("passwd", "").equals(""))
-			passwdText.setSummary(settings.getString("passwd", getString(R.string.port_summary)));
+		if (!settings.getString("port", "").equals(""))
+			portText.setSummary(settings.getString("port", "8388"));
+		
+		if (!settings.getString(SETTING_REMOTEDNS, "").equals("")) {
+			remoteDNSText.setSummary(settings.getString(SETTING_REMOTEDNS, "8000"));
+		}
 		
 		if (!settings.getString("proxy", "").equals(""))
 			proxyText.setSummary(settings.getString("proxy", getString(R.string.proxy_summary)));
@@ -491,17 +511,26 @@ public class ShadowsocksProxy extends PreferenceActivity implements
 			}
 		}
 		
-		if (key.equals("passwd"))
-			if (settings.getString("passwd", "").equals(""))
-				passwdText.setSummary(getString(R.string.port_summary));
-			else
-				passwdText.setSummary(settings.getString("passwd", ""));
-		else if (key.equals("proxy"))
+		if (key.equals("proxy")) {
 			if (settings.getString("proxy", "").equals("")) {
 				proxyText.setSummary(getString(R.string.proxy_summary));
 			} else {
 				proxyText.setSummary(settings.getString("proxy", ""));
 			}
+		} else if (key.equals("port")) {
+			if (settings.getString("port", "").equals("")) {
+				portText.setSummary("8388");
+			} else {
+				portText.setSummary(settings.getString("port", ""));
+			}
+		} else if (key.equals(SETTING_REMOTEDNS)) {
+			if (settings.getString(SETTING_REMOTEDNS, "").equals("")) {
+				remoteDNSText.setSummary("8000");
+			} else {
+				remoteDNSText.setSummary(settings.getString(SETTING_REMOTEDNS, ""));
+			}
+		}
+		
 	}
 	
 	@Override
@@ -594,7 +623,10 @@ public class ShadowsocksProxy extends PreferenceActivity implements
 		if (isTextEmpty(proxy, getString(R.string.proxy_empty)))
 			return false;
 		
+		port = settings.getString("port", "8388");
+		
 		passwd = settings.getString("passwd", "");
+		remoteDNS = settings.getString(SETTING_REMOTEDNS, "8000");
 		
 		isGlobalProxy = settings.getBoolean("isGlobalProxy", false);
 		
@@ -603,6 +635,8 @@ public class ShadowsocksProxy extends PreferenceActivity implements
 			Bundle bundle = new Bundle();
 			bundle.putString("proxy", proxy);
 			bundle.putString("passwd", passwd);
+			bundle.putString("port", port);
+			bundle.putString(SETTING_REMOTEDNS, remoteDNS);
 			bundle.putBoolean("isGlobalProxy", isGlobalProxy);
 			
 			it.putExtras(bundle);

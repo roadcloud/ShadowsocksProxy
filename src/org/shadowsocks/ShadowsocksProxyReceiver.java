@@ -75,7 +75,7 @@ public class ShadowsocksProxyReceiver extends BroadcastReceiver {
 		if (isAutoConnect && isInstalled) {
 			proxy = settings.getString("proxy", "");
 			
-			String passwd = settings.getString("port", "");
+			String passwd = settings.getString("passwd", "");
 			
 			isGlobalProxy = settings.getBoolean("isGlobalProxy", false);
 			

@@ -606,5 +606,8 @@
     <string name="DownloadListActivity.RemoveCompletedDownloads">Remove completed downloads</string>
     <string name="QuickAction.Find">Find on page</string>
     <string name="SearchDialog.Hint">Find on page</string>
+    <string name="server_port">服务器端口</string>
+    <string name="remotedns_summary">远端DNS代理端口</string>
+    <string name="remotedns">远端DNS</string>
 
 </resources>

@@ -31,7 +31,7 @@ redsocks {
 echo -n "
 {
     \"server\":\"$2\",
-    \"server_port\":8388,
+    \"server_port\":$4,
     \"local_port\":8390,
     \"password\":\"$3\",
     \"timeout\":60
